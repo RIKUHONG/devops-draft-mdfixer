@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "job_id": "job-repair-001",
+  "trace_id": "trace-0002",
+  "job_type": "REPAIR",
+  "status": "SUCCEEDED",
+  "execution": {
+    "created_at": "2026-09-16T10:10:00Z",
+    "started_at": "2026-09-16T10:10:03Z",
+    "finished_at": "2026-09-16T10:12:17Z"
+  },
+  "input": {
+    "repository": {
+      "url": "https://github.com/example/project.git",
+      "commit": "89abcdef0123456789abcdef0123456789abcdef"
+    },
+    "error_report": {
+      "uri": "artifact://example/full001/md-report.json",
+      "media_type": "application/json",
+      "repository_commit": "89abcdef0123456789abcdef0123456789abcdef",
+      "configuration_id": "gcc-default"
+    },
+    "environment": {
+      "image_uri": "docker://example/project:89abcde",
+      "workdir": "/workspace/project",
+      "configuration_id": "gcc-default",
+      "build_command": "make -j4",
+      "verify_command": "make test",
+      "timeout_seconds": 1800
+    }
+  },
+  "output": {
+    "accepted": true,
+    "declaration_style": "沿用 Makefile 现有的显式头文件依赖写法",
+    "patch": {
+      "artifact_id": "patch-001",
+      "type": "GIT_PATCH",
+      "uri": "artifact://example/repair001/fix.patch",
+      "media_type": "text/x-diff",
+      "producer_job_id": "job-repair-001",
+      "repository_commit": "89abcdef0123456789abcdef0123456789abcdef",
+      "configuration_id": "gcc-default"
+    },
+    "repairs": [
+      {
+        "finding_id": "finding-101",
+        "target": "src/foo.o",
+        "dependency": "include/foo.h",
+        "declaration_style": "MAKE_EXPLICIT_DEPENDENCY",
+        "repair_strategy": "ADD_HEADER_DEPENDENCY",
+        "accepted": true
+      }
+    ],
+    "rejected_candidates": [],
+    "build_result": { "success": true, "exit_code": 0 },
+    "verify_result": { "success": true, "exit_code": 0 },
+    "recheck_result": { "success": true, "remaining_missing": 0 }
+  },
+  "error": null
+}

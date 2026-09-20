@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "job_id": "job-repair-002",
+  "trace_id": "trace-0002",
+  "job_type": "REPAIR",
+  "status": "SUCCEEDED",
+  "execution": {
+    "created_at": "2026-09-16T10:15:00Z",
+    "started_at": "2026-09-16T10:15:02Z",
+    "finished_at": "2026-09-16T10:18:44Z"
+  },
+  "input": {
+    "repository": {
+      "url": "https://github.com/example/project.git",
+      "commit": "89abcdef0123456789abcdef0123456789abcdef"
+    },
+    "error_report": {
+      "uri": "artifact://example/full001/md-report.json",
+      "media_type": "application/json",
+      "repository_commit": "89abcdef0123456789abcdef0123456789abcdef",
+      "configuration_id": "gcc-default"
+    },
+    "environment": {
+      "image_uri": "docker://example/project:89abcde",
+      "workdir": "/workspace/project",
+      "configuration_id": "gcc-default",
+      "build_command": "make -j4",
+      "verify_command": "make test",
+      "timeout_seconds": 1800
+    }
+  },
+  "output": {
+    "accepted": false,
+    "repairs": [],
+    "rejected_candidates": [
+      {
+        "candidate": "在 Makefile 中为 src/main.o 追加 -include include/config.h",
+        "stage": "recheck",
+        "exit_code": 0,
+        "log_uri": "artifact://example/repair002/recheck.log",
+        "reason": "干净构建与测试均通过，但重检仍报告 finding-001 为 MISSING，说明该写法没有真正补上声明依赖"
+      }
+    ],
+    "build_result": { "success": true, "exit_code": 0 },
+    "verify_result": { "success": true, "exit_code": 0 },
+    "recheck_result": { "success": false, "remaining_missing": 1 }
+  },
+  "error": null
+}
